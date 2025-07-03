@@ -1,6 +1,8 @@
 # LLM-Powered Prediction of Hyperglycemia and Discovery of Behavioral Treatment Pathways from Wearables and Diet
 
-This repository contains the code and resources for **GlucoLens**, an explainable machine learning framework designed to predict the postprandial area under the curve (AUC) and hyperglycemia from multimodal data, including dietary intake, physical activity, and glucose levels. GlucoLens is an LLM-powered hybrid multimodal machine learning model for AUC and hyperglycemia prediction.
+This repository contains the code and resources for **GlucoLens**, an explainable machine learning framework designed to predict the postprandial area under the curve (AUC) and hyperglycemia from multimodal data, including dietary intake, physical activity, and glucose levels. GlucoLens is an LLM-powered hybrid multimodal machine learning model for AUC and hyperglycemia prediction. Advanced LLMs such as GPT 3.5 Turbo, GPT 4, Claude Opus 4, DeepSeek V3, Gemini 2.0 Flash, Grok 3, and Mistral Large were employed to empower the GlucoLens system.
+
+The latest version of the code will be released soon.
 
 ## Overview  
 Postprandial hyperglycemia, characterized by elevated blood glucose levels after meals, is a significant predictor of progression toward type 2 diabetes. Accurate prediction and understanding of AUC can empower individuals to make lifestyle adjustments to maintain healthy glucose levels.  
