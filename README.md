@@ -1,14 +1,14 @@
-# GlucoLens: Explainable Postprandial Blood Glucose Prediction from Diet and Physical Activity
+# LLM-Powered Prediction of Hyperglycemia and Discovery of Behavioral Treatment Pathways from Wearables and Diet
 
-This repository contains the code and resources for **GlucoLens**, an explainable machine learning framework designed to predict the postprandial area under the curve (PAUC) and hyperglycemia from multimodal data, including dietary intake, physical activity, and glucose levels.  
+This repository contains the code and resources for **GlucoLens**, an explainable machine learning framework designed to predict the postprandial area under the curve (AUC) and hyperglycemia from multimodal data, including dietary intake, physical activity, and glucose levels. GlucoLens is an LLM-powered hybrid multimodal machine learning model for AUC and hyperglycemia prediction.
 
 ## Overview  
-Postprandial hyperglycemia, characterized by elevated blood glucose levels after meals, is a significant predictor of progression toward type 2 diabetes. Accurate prediction and understanding of PAUC can empower individuals to make lifestyle adjustments to maintain healthy glucose levels.  
+Postprandial hyperglycemia, characterized by elevated blood glucose levels after meals, is a significant predictor of progression toward type 2 diabetes. Accurate prediction and understanding of AUC can empower individuals to make lifestyle adjustments to maintain healthy glucose levels.  
 
 GlucoLens is a novel computational model that combines machine learning with counterfactual explanations to:  
-1. **Predict PAUC** based on fasting glucose, recent glucose trends, activity levels, and macronutrient intake.
+1. **Predict AUC** based on fasting glucose, recent glucose trends, activity levels, and macronutrient intake.
 2. **Prediction Model**: Random Forest backbone achieving a normalized root mean squared error (NRMSE) of 0.123, outperforming baseline models by 16%. 
-3. **Classify hyperglycemia** with an accuracy of 74%.  
+3. **Classify hyperglycemia** with an accuracy of 73.3% and an F1 score of 0.716.  
 4. **Provide actionable recommendations** to avoid hyperglycemia through diverse counterfactual scenarios.  
 
 ## Features  
