@@ -20,15 +20,16 @@ GlucoLens is a novel computational model that combines machine learning with cou
 ## Citation 
 If you use part of our code or dataset or mention this work in your paper, please cite the following two publications:
 
-**_1. GlucoLens: Explainable Postprandial Blood Glucose Prediction from Diet and Physical Activity_**
+**_1. LLM-Powered Prediction of Hyperglycemia and Discovery of Behavioral Treatment Pathways from Wearables and Diet_**
 ````
-@misc{mamun2025glucolens,
-    title={GlucoLens: Explainable Postprandial Blood Glucose Prediction from Diet and Physical Activity},
-    author={Abdullah Mamun and Asiful Arefeen and Susan B. Racette and Dorothy D. Sears and Corrie M. Whisner and Matthew P. Buman and Hassan Ghasemzadeh},
-    year={2025},
-    eprint={2503.03935},
-    archivePrefix={arXiv},
-    primaryClass={cs.LG}
+@misc{mamun2025llmpoweredpredictionhyperglycemiadiscovery,
+      title={LLM-Powered Prediction of Hyperglycemia and Discovery of Behavioral Treatment Pathways from Wearables and Diet}, 
+      author={Abdullah Mamun and Asiful Arefeen and Susan B. Racette and Dorothy D. Sears and Corrie M. Whisner and Matthew P. Buman and Hassan Ghasemzadeh},
+      year={2025},
+      eprint={2503.03935},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2503.03935}, 
 }
 ````
 
