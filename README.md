@@ -24,7 +24,7 @@ If you use part of our code or dataset or mention this work in your paper, pleas
 
 **_1. LLM-Powered Prediction of Hyperglycemia and Discovery of Behavioral Treatment Pathways from Wearables and Diet_**
 ````
-@misc{mamun2025llmpoweredpredictionhyperglycemiadiscovery,
+@article{mamun2025llmpoweredpredictionhyperglycemiadiscovery,
       title={LLM-Powered Prediction of Hyperglycemia and Discovery of Behavioral Treatment Pathways from Wearables and Diet}, 
       author={Abdullah Mamun and Asiful Arefeen and Susan B. Racette and Dorothy D. Sears and Corrie M. Whisner and Matthew P. Buman and Hassan Ghasemzadeh},
       journal={Sensors},
