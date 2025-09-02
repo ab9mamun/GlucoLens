@@ -3,7 +3,8 @@ import numpy as np
 import os
 from datetime import datetime, date as date_func
 from dataprocessor import cgmprocessor
-
+from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
 
 def get_all_features(basepath, allusers):
     """
@@ -55,8 +56,6 @@ def get_all_features(basepath, allusers):
                 recent_activity = get_recent_activity(basepath, user, phase, day)
                 # Get the BMI
                 bmi = get_bmi(basepath, user)
-                # Get the diet details
-                diet = 0  # get_diet(basepath, user, phase, day)
                 # Get the postprandial AUC
                 auc = get_postprandial_AUC(basepath, user, phase, day)
 
@@ -94,8 +93,8 @@ def get_fasting_glucose(basepath, participant, phase, date):
     if flag:
         df['day'] = dates2
 
-
     fildf = df[df['day'] == date]
+   
 
     hours = fildf['hour'].to_numpy()
     gluc = fildf['corrected_glucose'].to_numpy()
@@ -298,7 +297,6 @@ def get_recent_activity(basepath, participant, phase, date):
             return np.mean(walking2 + 0.5 * standing2)
     return 0
 
-
 def get_bmi(basepath, participant):
     """
     Get the BMI for each user
@@ -314,13 +312,6 @@ def get_bmi(basepath, participant):
     bmi = fildf['Baseline'].to_numpy()[0]
     return bmi
 
-
-def get_diet():
-    """
-    Get the diet details for each user
-
-    :return:
-    """
 
 
 def get_postprandial_AUC(basepath, participant, phase, date):
@@ -488,7 +479,7 @@ def get_activity_before_lunch(basepath, participant, phase, date, lunch_time):
         if 'EventsEx.csv' in file:
             found = True
 
-            if participant == 'Participant4' and phase == 'condition2':
+            if participant == 'P4' and phase == 'condition2':
                 skiprows = 15
             else:
                 skiprows = 2
@@ -497,6 +488,7 @@ def get_activity_before_lunch(basepath, participant, phase, date, lunch_time):
             break
     if not found:
         return None, None, None, None, None, None, work_start_time
+
 
     event_df['next_time'] = event_df['Time'].shift(-1)
     event_df['next_time'] = event_df['next_time'].fillna(0)
@@ -776,7 +768,6 @@ def get_absolute_and_respective_auc(basepath, participant, phase, date, lunch_ti
 
 
 def plot_beautiful_auc(basepath, output_folder, user, corrected_date, lunch_time, phase):
-
     cgm_path = f'{basepath}cgm/{phase}_cleaned/{user}_{phase}_cleaned_cgm.csv'
 
     cgm_df = pd.read_csv(cgm_path)
@@ -810,30 +801,91 @@ def plot_beautiful_auc(basepath, output_folder, user, corrected_date, lunch_time
     print('After removing the offset')
     print(time_to_consider, gluc_to_consider)
     print(lunch_timestamp)
-    from matplotlib import pyplot as plt
+
+    # Create the plot
     fig, ax = plt.subplots()
-    #steps = np.arange(len(time_to_consider))
-    ax.plot(time_to_consider, gluc_to_consider, label='Glucose', color='blue', linewidth=3)
-    plt.rcParams['axes.linewidth'] = 1
 
-    ax.set_xlabel('Time since lunch (h)', fontsize=14)
-    ax.set_ylabel('Glucose (mg/dL)', fontsize=14)
-    try:
-        ax.xaxis.set_tick_params(width=1)
-        ax.yaxis.set_tick_params(width=1)
-        ax.tick_params(axis='x', labelsize=12)
-        ax.tick_params(axis='y', labelsize=12)
-    except UserWarning:
-        print('UserWarning')
+    # Customize line plot
+    ax.plot(time_to_consider, gluc_to_consider, label='Continuous blood glucose', color='black', linewidth=3)
+
+    # Global plot settings for thick borders and bold fonts
+    plt.rcParams['axes.linewidth'] = 3  # Thicker border
+    plt.rcParams["font.weight"] = "bold"  # Bold fonts globally
+    plt.rcParams["axes.labelweight"] = "bold"  # Bold axes labels
+
+    # Set axis labels with bold fonts and custom font size
+    ax.set_xlabel('Time since lunch (h)', fontsize=16, fontweight='bold')
+    ax.set_ylabel('Blood glucose (mg/dL)', fontsize=16, fontweight='bold')
+
+    # Customize ticks
+    ax.tick_params(axis='x', width=3, labelsize=16)  # Thicker x-axis ticks
+    ax.tick_params(axis='y', width=3, labelsize=16)  # Thicker y-axis ticks
+
+    for spine in ax.spines.values():
+        spine.set_linewidth(3)
+    # Set y-axis limits
     ax.set_ylim([0, 180])
-    #print(f'Lunch timestamp: {lunch_timestamp}')
-    ax.axvline(x=lunch_timestamp, color='red', linestyle='--', label='Lunch time')
-    ax.axvline(x=lunch_timestamp+3, color='green', linestyle='--', label='Lunch + 3hrs')
-    ax.axhline(y=baseline_gluc, color='black', linestyle='--', label='Baseline glucose')
 
-    plt.savefig(f'{output_folder}/CGM_plot.png')
+    # Add vertical and horizontal lines with labels
+    ax.axvline(x=lunch_timestamp, color='red', linestyle='--', label='Lunch time', linewidth=2)
+    ax.axvline(x=lunch_timestamp + 3, color='green', linestyle='--', label='Lunch + 3hrs', linewidth=2)
+    ax.axhline(y=baseline_gluc, color='black', linestyle='--', label='Baseline glucose', linewidth=2)
+
+    # Add legend
+    ax.legend(fontsize=11, loc='upper center', bbox_to_anchor=(0.5, 1.0), ncol=1)
+
+    # Save the plot and close
+    plt.savefig(f'{output_folder}/CGM_plot.png', bbox_inches='tight')  # Save with tight bounding box
     plt.close()
 
+
+def plot_mlp_results(basepath, output_folder):
+    # Data from the table
+    categories = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+    auc_values = [74, 29, 27, 22, 21, 19, 18, 18, 19, 18, 18, 18, 17]
+    maxbgl_values = [50, 24, 24, 21, 21, 19, 18.3, 18.0, 19, 18, 19, 19, 17.5]
+
+    # Divide each value by 100
+    auc_values = [x / 100 for x in auc_values]
+    maxbgl_values = [x / 100 for x in maxbgl_values]
+
+    # Bar width
+    bar_width = 0.25
+
+    # X positions for bars
+    x = np.arange(len(categories))
+
+    # Plot bars with patterns
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.set_ylim(0, 1)  # Set y-axis limits to 0-1 for NRMSE
+    ax.bar(x - bar_width, auc_values, width=bar_width, label='AUC NRMSE', hatch='//', facecolor='#1e81b0', edgecolor='black', linewidth=1.5)
+    ax.bar(x + bar_width, maxbgl_values, width=bar_width, label='MaxBGL NRMSE', hatch='\\\\', facecolor='#e28743', edgecolor='black', linewidth=1.5)
+
+    # Add labels and title
+    ax.set_xlabel('MLP Variation', fontsize=14, fontweight='bold')
+    ax.set_ylabel('NRMSE', fontsize=14, fontweight='bold')
+    ax.set_title('NRMSE metrics for predictions of AUC and MaxBGL', fontsize=16, fontweight='bold')
+    ax.set_xticks(x)
+    ax.set_xticklabels(categories, fontsize=12)
+    ax.legend(fontsize=12)
+
+    # Customize tick fonts
+    ax.tick_params(axis='y', labelsize=14)  # Increase y-axis tick font size
+    ax.tick_params(axis='x', labelsize=12)  # Maintain x-axis tick font size
+
+    # Customize borders
+    for spine in ax.spines.values():
+        spine.set_linewidth(3)  # Set spine thickness
+
+    # Customize gridlines
+    #ax.grid(axis='y', linestyle='--', alpha=0.7)
+
+    # Tight layout for better spacing
+    plt.tight_layout()
+
+    # Save the plot
+    plt.savefig(f"{output_folder}/mlp_results_plot.png", bbox_inches='tight')  # Save with tight bounding box
+    plt.close()
 
 
 

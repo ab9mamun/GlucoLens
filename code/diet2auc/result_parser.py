@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import numpy as np
 
+
+# depending on which results you are parsing,  you would need to specify them in this code.
 def parse_regression_results(basepath, output_folder):
     # parse the regression results and extract meaningful information.
 
@@ -11,7 +13,7 @@ def parse_regression_results(basepath, output_folder):
     txt_feature_set = ''
     txt_outcome = ''
 
-    for outcome in ['absolute_auc','respective_auc', 'max_postprandial_gluc']:
+    for outcome in ['absolute_auc']:#['absolute_auc','respective_auc', 'max_postprandial_gluc']:
         lowest_nrmse_per_outcome = np.inf
         best_hyper_params_per_outcome = None
         best_model_per_outcome = None
@@ -23,7 +25,8 @@ def parse_regression_results(basepath, output_folder):
             best_hyper_params_per_feature_set = None
             best_model_per_feature_set = None
 
-            for model in ['TabNet', 'XGBoost', 'Ridge','RandomForest','MLPRegressor']:
+            #for model in ['self_supervised_RF']:#'Ridge','RandomForest','MLPRegressor']:
+            for model in ['Ridge','RandomForest','MLPRegressor']:
                 full_output_path = f'{output_folder}/{feature_set}/{model}/{outcome}/results.csv'
                 if not os.path.exists(full_output_path):
                     continue

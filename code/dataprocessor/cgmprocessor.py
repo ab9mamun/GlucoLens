@@ -619,26 +619,3 @@ def phase_avg_glucose_at7_930_11(basepath, all_phases, allusers):
 
     with open(f'{basepath}each_phase_daily_avg_and_glucose_at7_9_930_11.csv', 'w') as file:
         file.write(txt)
-
-
-def clean_cgm(basepath, phase, allusers):
-    """
-    This function cleans the CGM data and saves to a new CSV file.
-    :param basepath:
-    :param phase:
-    :param allusers:
-    :return:
-    """
-    print('Warning: This function is not the correct cleaning function. Returning..')
-    return
-
-    for user in allusers:
-        glucdf = pd.read_csv(f'{basepath}cgm/{phase}/{user}_{phase}_cgm.csv')
-        gluc = glucdf['corrected_glucose'].to_numpy()
-        timestamps = glucdf['Device Timestamp'].to_numpy()
-        hours = []
-        for i in range(len(timestamps)):
-            hours.append(datetime.datetime.strptime(timestamps[i], '%m/%d/%Y %H:%M:%S').hour + datetime.datetime.strptime(timestamps[i], '%m/%d/%Y %H:%M:%S').minute/60.0)
-        glucdf['hour'] = hours
-        glucdf.to_csv(f'{basepath}cgm/{phase}_cleaned/{user}_{phase}_cleaned_cgm.csv', index=False)
-        print(f'Cleaned {user}_{phase}_cgm.csv')

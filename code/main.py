@@ -8,7 +8,7 @@ import warnings
 def main(args):
     """
         How will the tasks be handled?
-       1. The allusers list will have all the users regardless of the phase and task. The cases for missing data will be handled in the respective functions.
+       1. The allusers list will have all users regardless of the phase and task. The cases for missing data will be handled in the respective functions.
        It is the responsibility of the function to handle the missing data.
        2. The task will be passed as an argument to the main function.
        3. The main function will call the respective function based on the task.
@@ -19,9 +19,9 @@ def main(args):
 
     print(args)
     args = parser.parse_args()
-    
-    allusers = ['Participant1', 'Participant2', 'Participant3', 'Participant4', 'Participant5', 'Participant6',
-                'Participant7', 'Participant8', 'Participant9', 'Participant10']
+    # total 16 users are there.
+    allusers = ['P1', 'P2', 'P3', 'P4', 'P5',
+                'P6', 'P7', 'P8', 'P9', 'P10']
 
     task = args.task
     test_param = args.test_param
@@ -82,12 +82,38 @@ def main(args):
         # The results will be stored in the output folder
         models.train_and_evaluate(basepath, output_folder, model, seed)
 
-    elif task == 'diet2auc_ultra':
+    elif task == 'diet2auc_complete':
         # Run the diet2auc model
         # This will use the dataset created in the previous step
         # The model will be trained and tested
         # The results will be stored in the output folder
-        models.diet2auc_ultra(basepath, output_folder)
+        models.diet2auc_complete(basepath, output_folder)
+
+
+    elif task == 'diet2auc_llm':
+        # Run the diet2auc model
+        # This will use the dataset created in the previous step
+        # The model will be trained and tested
+        # The results will be stored in the output folder
+        models.diet2auc_llm(basepath, output_folder)
+
+    elif task == 'calculate_llm_metrics':
+
+        models.calculate_llm_metrics(basepath, output_folder)
+
+    elif task == 'diet2auc_hybrid':
+
+        models.diet2auc_hybrid(basepath, output_folder)
+
+    elif task == 'diet2auc_hybrid_only_claude':
+
+        models.diet2auc_hybrid(basepath, output_folder, only_claude=True)
+
+
+    elif task == 'diet2auc_hybrid_only_claude_augmented':
+
+        models.diet2auc_hybrid(basepath, output_folder, only_claude=True, augmented=True)
+
 
     elif task == 'parse_regression_results':
         # This will use the dataset created in the previous step
@@ -110,6 +136,10 @@ def main(args):
 
     elif task == 'plot_1_auc':
         get_features.plot_beautiful_auc(basepath, output_folder, user=args.plot_user, corrected_date=args.plot_date, lunch_time=args.plot_lunch_time, phase= args.plot_phase)
+
+    elif task == 'plot_mlp_results':
+        get_features.plot_mlp_results(basepath, output_folder)
+
     elif task == 'correlation':
         correlations.pearson_correlation(basepath, output_folder, allusers, corr_column)
 
@@ -162,7 +192,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--plot_user',
                         default='None',
-                        help='User ID for the plot',
+                        help='Columns to see the correlation for',
                         type=str)
     
     parser.add_argument('--plot_date',

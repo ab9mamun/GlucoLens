@@ -56,14 +56,16 @@ def pearson_correlation(basepath, output_folder, allusers, corr_column):
     data = dd.load_dataset_with_respective_auc(basepath)
     data = data.drop(columns=['auc'])
     maxpbg = data.pop('max_postprandial_gluc')
-    data['MaxPBG'] = maxpbg
+    data['MaxBGL'] = maxpbg
 
     hyperglycemia = data.pop('postprandial_hyperglycemia_140')
-    data['MaxPBG>140'] = hyperglycemia
+    data['MaxBGL>140'] = hyperglycemia
 
+    maxpbg = data.pop('respective_auc')
+    data['Incremental AUC'] = maxpbg
 
     label_col = data.pop('absolute_auc')  # remove the label column
-    data['absolute_auc'] = label_col  # add it back as the last column
+    data['AUC'] = label_col  # add it back as the last column
 
 
     X = data.drop(columns=['phase', 'day', 'user_id'])
